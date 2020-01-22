@@ -13,8 +13,15 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
                     You are logged in!
+                    <hr>
+
+                    @can('access-admin-dashboard')
+                        <a class="btn btn-primary btn-sm" href="{{route('admin_dashboard')}}" role="button">
+                            Dashboard de Administracion
+                        </a>
+                    @endcan
+
                 </div>
             </div>
         </div>
