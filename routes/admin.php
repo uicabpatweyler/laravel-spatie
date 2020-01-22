@@ -7,3 +7,4 @@ Route::catch(function () {
 });
 
 Route::get('/', 'DashboardController@index')->name('admin_dashboard');
+Route::resource('/roles','RoleController');
