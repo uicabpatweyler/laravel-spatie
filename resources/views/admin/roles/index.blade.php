@@ -8,6 +8,12 @@
                     <div class="card-header">Administracion: Roles de Usuario</div>
 
                     <div class="card-body">
+                        @can('role-create')
+                        <a class="btn btn-primary btn-sm" href="{{route('roles.create')}}" role="button">
+                            Nuevo Rol de Usuario
+                        </a>
+                        @endcan
+                        <hr>
                         <table class="table table-striped">
                             <thead>
                             <tr>
