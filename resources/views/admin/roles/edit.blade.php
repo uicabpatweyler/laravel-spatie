@@ -8,6 +8,11 @@
                     <div class="card-header">Editar Rol: {{$role->name}}</div>
 
                     <div class="card-body">
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-success">
+                                <p>{{ $message }}</p>
+                            </div>
+                        @endif
                         <form  method="POST" action="{{route('roles.update', ['role' => $role->id])}}" name="form_edit">
 
                             @csrf
