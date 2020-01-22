@@ -2,19 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Auth;
+use App\Http\Requests\RoleRequest;
 use Illuminate\Http\Request;
 use App\Models\Admin\Role;
 use App\Http\Controllers\Controller;
-use Spatie\Permission\Exceptions\UnauthorizedException;
 
 class RoleController extends Controller
 {
-
-    public function __construct()
-    {
-        //$this->middleware(['permission:roles-manage']);
-    }
 
     public function index()
     {
@@ -24,36 +18,27 @@ class RoleController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $this->authorize('create', Role::class);
+        return response()->view('admin.roles.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(RoleRequest $request)
     {
-        //
+        $this->authorize('create', Role::class);
+        $role = Role::create([
+            'name' => $request->input('name')
+        ]);
+        return redirect()->route('roles.edit',['role'=> $role->id])
+            ->with('success','El rol de usuario se ha creado correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Role $role)
     {
-        //
+        $this->authorize('view', $role);
+        return ddd($role);
     }
 
     public function edit(Role $role)
@@ -69,16 +54,11 @@ class RoleController extends Controller
         $this->authorize('update', $role);
         $role->name = $request->input('name');
         $role->save();
-        return redirect()->route('roles.index');
+        return redirect()->route('roles.edit',['role'=> $role->id])
+            ->with('success','El rol de usuario se ha guardado correctamente');
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
